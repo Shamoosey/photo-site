@@ -9,8 +9,11 @@ import P6 from "../assets/photo (6).jpg";
 import P7 from "../assets/photo (7).jpg";
 import P8 from "../assets/photo (8).jpg";
 import P9 from "../assets/photo (9).jpg";
+import P10 from "../assets/photo (10).jpg";
+import P11 from "../assets/photo (11).jpg";
+import P12 from "../assets/photo (12).jpg";
 
-const INITIAL_IMAGES = [P1, P2, P3, P4, P5, P6, P7, P8, P9];
+const INITIAL_IMAGES = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12];
 
 export default function PhotoGrid() {
   const [images] = useState<string[]>(INITIAL_IMAGES);
