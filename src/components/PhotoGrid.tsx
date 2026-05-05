@@ -12,19 +12,43 @@ import P9 from "../assets/photo (9).jpg";
 import P10 from "../assets/photo (10).jpg";
 import P11 from "../assets/photo (11).jpg";
 import P12 from "../assets/photo (12).jpg";
+import type { LightboxImage } from "./Lightbox";
+import Lightbox from "./Lightbox";
 
-const INITIAL_IMAGES = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12];
+const INITIAL_IMAGES: LightboxImage[] = [
+  { src: P1, caption: "Golden hour", meta: "Canon EOS R5 · f/1.8 · 1/1000s · ISO 100" },
+  { src: P2 },
+  { src: P3, caption: "Downtown reflections" },
+  { src: P4 },
+  { src: P5, meta: "Shot on iPhone 15 Pro" },
+  { src: P6 },
+  { src: P7, caption: "Morning fog", meta: "Sony A7IV · f/2.8 · 1/500s · ISO 200" },
+  { src: P8 },
+  { src: P9, caption: "Street life" },
+  { src: P10 },
+  { src: P11 },
+  { src: P12, caption: "Last light", meta: "Fujifilm X-T5 · f/4 · 1/250s · ISO 400" },
+];
 
 export default function PhotoGrid() {
-  const [images] = useState<string[]>(INITIAL_IMAGES);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const openLightbox = (index: number) => setSelectedIndex(index);
+  const closeLightbox = () => setSelectedIndex(null);
+  const goNext = () => setSelectedIndex((i) => (i === null ? null : (i + 1) % INITIAL_IMAGES.length));
+  const goPrev = () => setSelectedIndex((i) => (i === null ? null : (i - 1 + INITIAL_IMAGES.length) % INITIAL_IMAGES.length));
 
   return (
-    <section className="grid grid-cols-2 md:grid-cols-3 gap-1 p-1">
-      {images.map((src, i) => (
-        <div key={i} className="w-full aspect-square overflow-hidden">
-          <img src={src} className="w-full h-full object-cover" />
-        </div>
-      ))}
-    </section>
+    <>
+      <section className="grid grid-cols-2 md:grid-cols-3 gap-1 p-1">
+        {INITIAL_IMAGES.map((image, i) => (
+          <div key={i} className="w-full aspect-square overflow-hidden cursor-pointer" onClick={() => openLightbox(i)}>
+            <img src={image.src} className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
+          </div>
+        ))}
+      </section>
+
+      <Lightbox images={INITIAL_IMAGES} selectedIndex={selectedIndex} onClose={closeLightbox} onNext={goNext} onPrev={goPrev} />
+    </>
   );
 }
