@@ -7,7 +7,7 @@ export default function Home() {
   const { selectedIndex, closeLightbox, goNext, openLightbox, goPrev } = useLightbox(photoCollection?.images ?? []);
 
   return (
-    <div className="flex flexc-col">
+    <div className="flex flex-col">
       {!isLoading && photoCollection ? (
         <div className="flex flex-col">
           <section className="grid grid-cols-2 md:grid-cols-3 gap-1 p-1">
