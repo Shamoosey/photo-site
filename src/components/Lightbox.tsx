@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import type { Image } from "../types/Image";
 import { Button } from "./UI/Button";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 
 interface LightboxProps {
   images: Image[];
@@ -35,7 +36,7 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
       <Button
         className="absolute top-4 right-4 text-white text-3xl leading-none hover:text-gray-300 transition-colors"
         onClick={onClose}>
-        <X />
+        <FaX />
       </Button>
 
       <Button
@@ -45,7 +46,7 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
           e.stopPropagation();
           onPrev();
         }}>
-        <ChevronLeft />
+        <FaChevronLeft />
       </Button>
 
       <div className="flex flex-col items-center gap-3 max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
@@ -66,7 +67,7 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
           e.stopPropagation();
           onNext();
         }}>
-        <ChevronRight />
+        <FaChevronRight />
       </Button>
 
       <div className="absolute bottom-4 text-white text-sm opacity-70">
