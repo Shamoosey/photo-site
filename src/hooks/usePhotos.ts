@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
-import type { ImageCollection } from "../types/ImageCollection";
 import * as PhotoService from "../services/photo.service";
+import type { Image } from "../types/Image";
 
-export function usePhotoCollection(name: string, dependencies?: unknown[]) {
+export function usePhotos(dependencies?: unknown[]) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [photoCollection, setPhotoCollection] = useState<ImageCollection | null>(null);
+  const [images, setImages] = useState<Image[]>([]);
 
   const fetchPhotoCollection = useCallback(async () => {
     setIsLoading(true);
-    const data = await PhotoService.getPhotosByCollectionName(name);
-    setPhotoCollection(data);
     try {
+      const data = await PhotoService.getAllPhotos();
+      setImages(data);
     } catch (error) {
       setError("Unable to fetch photo collection due to unexpected error");
     } finally {
@@ -26,6 +26,7 @@ export function usePhotoCollection(name: string, dependencies?: unknown[]) {
   return {
     isLoading,
     error,
-    photoCollection,
+    images,
+    refetch: fetchPhotoCollection,
   };
 }

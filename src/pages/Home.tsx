@@ -1,17 +1,18 @@
 import Lightbox from "../components/Lightbox";
+import { LoadingSpinner } from "../components/UI";
 import useLightbox from "../hooks/useLightbox";
-import { usePhotoCollection } from "../hooks/usePhotos";
+import { usePhotos } from "../hooks/usePhotos";
 
 export default function Home() {
-  const { photoCollection, isLoading, error } = usePhotoCollection("home", undefined);
-  const { selectedIndex, closeLightbox, goNext, openLightbox, goPrev } = useLightbox(photoCollection?.images ?? []);
+  const { images, isLoading, error } = usePhotos(undefined);
+  const { selectedIndex, closeLightbox, goNext, openLightbox, goPrev } = useLightbox(images ?? []);
 
   return (
     <div className="flex flex-col">
-      {!isLoading && photoCollection ? (
+      {!isLoading && images ? (
         <div className="flex flex-col">
           <section className="grid grid-cols-2 md:grid-cols-3 gap-1 p-1">
-            {photoCollection.images.map((image, i) => (
+            {images.map((image, i) => (
               <div
                 key={i}
                 className="w-full aspect-square overflow-hidden cursor-pointer"
@@ -25,7 +26,7 @@ export default function Home() {
           </section>
 
           <Lightbox
-            images={photoCollection.images}
+            images={images}
             selectedIndex={selectedIndex}
             onClose={closeLightbox}
             onNext={goNext}
@@ -33,9 +34,8 @@ export default function Home() {
           />
         </div>
       ) : (
-        <div>
-          <div>LOADING</div>
-          <div>{error}</div>
+        <div className="flex justify-center mt-80 ">
+          <LoadingSpinner />
         </div>
       )}
     </div>
