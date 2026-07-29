@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { uploadImage } from "../services/photo.service";
 
 export function useImageUpload(onSuccess?: () => void) {
+  const [loading, setLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -108,6 +110,8 @@ export function useImageUpload(onSuccess?: () => void) {
   };
 
   const handleImageChange = async (file: File | null) => {
+    const newErrors = new Map<string, string>();
+    setImageUploading(true);
     setErrors((prev) => {
       const next = new Map(prev);
       next.delete("image");
@@ -115,19 +119,24 @@ export function useImageUpload(onSuccess?: () => void) {
     });
 
     if (!file) {
+      fileInputRef.current!.value = "";
       setImageFile(null);
       setImagePreview(null);
+      setImageUploading(false);
       return;
     }
 
     if (file.size > 25 * 1024 * 1024) {
-      setErrors((prev) => new Map(prev).set("image", "Image must be less than 25MB"));
-      return;
+      newErrors.set("image", "Image must be less than 25MB");
     }
 
     if (!file.type.startsWith("image/")) {
-      setErrors((prev) => new Map(prev).set("image", "Only image files are allowed"));
-      return;
+      newErrors.set("image", "Only image files are allowed");
+    }
+
+    if (newErrors.size > 0) {
+      setImageUploading(false);
+      setErrors(newErrors);
     }
 
     setImageFile(file);
@@ -139,6 +148,8 @@ export function useImageUpload(onSuccess?: () => void) {
       setErrors((prev) => new Map(prev).set("image", "Unable to process this image, please try a different one"));
       setImageFile(null);
       setImagePreview(null);
+    } finally {
+      setImageUploading(false);
     }
   };
 
@@ -170,6 +181,7 @@ export function useImageUpload(onSuccess?: () => void) {
       setErrors(newErrors);
       return;
     }
+    setLoading(true);
     await uploadImage({
       imageBase64: imagePreview as string,
       caption,
@@ -178,6 +190,7 @@ export function useImageUpload(onSuccess?: () => void) {
 
     reset();
     onSuccess?.();
+    setLoading(false);
   };
 
   return {
@@ -186,6 +199,8 @@ export function useImageUpload(onSuccess?: () => void) {
     imagePreview,
     caption,
     metaData,
+    loading,
+    imageUploading,
     errors,
     setCaptionValue,
     setMetaDataValue,

@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import { Layout } from "./pages/Layout";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
+import { AdminRoute } from "./utils/AdminRoute";
 
 function App() {
   return (
@@ -11,7 +12,14 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
-          <Route path="admin" element={<Admin />} />
+          <Route
+            path="admin"
+            element={
+              <AdminRoute>
+                <Admin />
+              </AdminRoute>
+            }
+          />
         </Route>
       </Routes>
     </>
