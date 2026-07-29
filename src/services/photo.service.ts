@@ -34,6 +34,24 @@ export async function uploadImage(payload: UploadImagePayload) {
   return json.data;
 }
 
+export async function editImageData(imageId: string, payload: { caption: string; metaData: string }) {
+  const sessionToken = await getToken();
+  if (!sessionToken) throw new Error("Unauthorized");
+
+  const res: Response = await fetch(`${BASE_URL}/photo/${imageId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to edit image data");
+  }
+
+  const json: BaseResponse<Image> = await res.json();
+  return json.data;
+}
+
 export async function deleteImage(imageId: string) {
   const sessionToken = await getToken();
   if (!sessionToken) throw new Error("Unauthorized");
