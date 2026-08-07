@@ -40,9 +40,7 @@ export default function EditableImageList({ images, refetch }: EditableImageList
   return (
     <div className="flex flex-col gap-2">
       {getSortedImages().map((image, i) => (
-        <div
-          key={i}
-          className="flex flex-col sm:flex-row gap-2 border-black border-2 p-2 rounded w-full sm:min-h-[200px]">
+        <div key={i} className="flex flex-col sm:flex-row gap-2 border-black border-2 p-2 rounded w-full sm:min-h-50">
           <img src={image.imageUrl} className="w-full h-48 object-cover sm:w-48 sm:h-48 sm:object-cover rounded" />
           <div className="flex flex-col min-w-0 flex-1">
             {isEditing(image.id) ? (
@@ -63,8 +61,7 @@ export default function EditableImageList({ images, refetch }: EditableImageList
                 </div>
                 <div className="flex flex-col gap-1 pt-4">
                   <span className="font-bold">MetaData:</span>
-                  <Input
-                    type="text"
+                  <textarea
                     placeholder="MetaData"
                     required
                     value={editMetaData}
