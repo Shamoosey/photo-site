@@ -4,6 +4,7 @@ export interface Image {
   cloudinaryId: string;
   caption: string;
   metaData: string;
+  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
 }

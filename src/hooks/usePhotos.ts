@@ -23,10 +23,16 @@ export function usePhotos(dependencies?: unknown[]) {
     fetchPhotoCollection();
   }, [dependencies]);
 
+  const sortedImages = images.sort((a, b) => {
+    if (a.sortOrder > b.sortOrder) return 1;
+    else return -1;
+  });
+
   return {
     isLoading,
     error,
     images,
+    sortedImages,
     refetch: fetchPhotoCollection,
   };
 }

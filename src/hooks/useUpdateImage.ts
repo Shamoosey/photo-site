@@ -6,6 +6,7 @@ export function useUpdateImage(refetch: () => void) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [caption, setCaption] = useState<string>("");
   const [metaData, setMetaData] = useState<string>("");
+  const [sortOrder, setSortOrder] = useState<number>(0);
   const [errors, setErrors] = useState<Map<string, string>>(new Map());
   const [loading, setLoading] = useState(false);
 
@@ -15,6 +16,7 @@ export function useUpdateImage(refetch: () => void) {
     setEditingId(image.id);
     setCaption(image.caption);
     setMetaData(image.metaData);
+    setSortOrder(image.sortOrder);
     setErrors(new Map());
   };
 
@@ -22,6 +24,7 @@ export function useUpdateImage(refetch: () => void) {
     setEditingId(null);
     setCaption("");
     setMetaData("");
+    setSortOrder(0);
     setErrors(new Map());
   };
 
@@ -29,6 +32,7 @@ export function useUpdateImage(refetch: () => void) {
     const newErrors = new Map<string, string>();
     if (!caption?.trim()) newErrors.set("caption", "Caption is required");
     if (!metaData?.trim()) newErrors.set("metaData", "MetaData is required");
+    if (!metaData?.trim()) newErrors.set("sortOrder", "SortOrder is required");
     setErrors(newErrors);
     return newErrors.size === 0;
   };
@@ -39,7 +43,7 @@ export function useUpdateImage(refetch: () => void) {
 
     setLoading(true);
     try {
-      await editImageData(editingId, { caption, metaData });
+      await editImageData(editingId, { caption, metaData, sortOrder });
       refetch();
       cancelEdit();
     } catch (err) {
@@ -53,11 +57,13 @@ export function useUpdateImage(refetch: () => void) {
     editingId,
     caption,
     metaData,
+    sortOrder,
     errors,
     loading,
     isEditing,
     setCaptionValue: setCaption,
     setMetaDataValue: setMetaData,
+    setSortOrderValue: setSortOrder,
     startEdit,
     cancelEdit,
     saveEdit,

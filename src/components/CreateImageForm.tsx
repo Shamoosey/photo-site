@@ -12,11 +12,13 @@ export default function CreateImageForm({ refetch }: CreateImageFormProps) {
     imagePreview,
     caption,
     metaData,
+    sortOrder,
     errors,
     loading,
     imageUploading,
     setCaptionValue,
     setMetaDataValue,
+    setSortOrderValue,
     handleImageChange,
     submit,
   } = useImageUpload(refetch);
@@ -74,6 +76,17 @@ export default function CreateImageForm({ refetch }: CreateImageFormProps) {
           />
           {errors.has("metaData") && (
             <span className="text-red-500 font-semibold text-sm">{errors.get("metaData")}</span>
+          )}
+          <Input
+            type="number"
+            placeholder="SortOrder"
+            required
+            value={sortOrder}
+            onChange={(e) => setSortOrderValue(Number.parseInt(e.target.value))}
+            className="border rounded p-2 w-full"
+          />
+          {errors.has("sortOrder") && (
+            <span className="text-red-500 font-semibold text-sm">{errors.get("sortOrder")}</span>
           )}
           <Button
             type="button"

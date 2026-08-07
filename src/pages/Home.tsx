@@ -4,7 +4,7 @@ import useLightbox from "../hooks/useLightbox";
 import { usePhotos } from "../hooks/usePhotos";
 
 export default function Home() {
-  const { images, isLoading, error } = usePhotos(undefined);
+  const { images, sortedImages, isLoading, error } = usePhotos(undefined);
   const { selectedIndex, closeLightbox, goNext, openLightbox, goPrev } = useLightbox(images ?? []);
 
   return (
@@ -12,7 +12,7 @@ export default function Home() {
       {!isLoading && images ? (
         <div className="flex flex-col">
           <section className="grid grid-cols-2 md:grid-cols-3 gap-1 p-1">
-            {images.map((image, i) => (
+            {sortedImages.map((image, i) => (
               <div
                 key={i}
                 className="w-full aspect-square overflow-hidden cursor-pointer"

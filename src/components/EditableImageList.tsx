@@ -15,11 +15,13 @@ export default function EditableImageList({ images, refetch }: EditableImageList
   const {
     caption: editCaption,
     metaData: editMetaData,
+    sortOrder: editSortOrder,
     errors: editErrors,
     loading: editLoading,
     isEditing,
-    setCaptionValue: setEditCaptionValue,
-    setMetaDataValue: setEditMetaDataValue,
+    setCaptionValue,
+    setMetaDataValue,
+    setSortOrderValue,
     startEdit,
     cancelEdit,
     saveEdit,
@@ -27,7 +29,7 @@ export default function EditableImageList({ images, refetch }: EditableImageList
 
   const getSortedImages = () => {
     return images.sort((a, b) => {
-      if (a.updatedAt < b.updatedAt) {
+      if (a.sortOrder > b.sortOrder) {
         return 1;
       }
 
@@ -52,7 +54,7 @@ export default function EditableImageList({ images, refetch }: EditableImageList
                     placeholder="Caption"
                     required
                     value={editCaption}
-                    onChange={(e) => setEditCaptionValue(e.target.value)}
+                    onChange={(e) => setCaptionValue(e.target.value)}
                     className="border rounded p-2 w-full"
                   />
                   {editErrors.has("caption") && (
@@ -66,11 +68,25 @@ export default function EditableImageList({ images, refetch }: EditableImageList
                     placeholder="MetaData"
                     required
                     value={editMetaData}
-                    onChange={(e) => setEditMetaDataValue(e.target.value)}
+                    onChange={(e) => setMetaDataValue(e.target.value)}
                     className="border rounded p-2 w-full"
                   />
                   {editErrors.has("metaData") && (
                     <span className="text-red-500 font-semibold text-sm">{editErrors.get("metaData")}</span>
+                  )}
+                </div>
+                <div className="flex flex-col gap-1 pt-4">
+                  <span className="font-bold">Sort Order:</span>
+                  <Input
+                    type="number"
+                    placeholder="Sort Order"
+                    required
+                    value={editSortOrder}
+                    onChange={(e) => setSortOrderValue(Number.parseInt(e.target.value))}
+                    className="border rounded p-2 w-full"
+                  />
+                  {editErrors.has("sortOrder") && (
+                    <span className="text-red-500 font-semibold text-sm">{editErrors.get("sortOrder")}</span>
                   )}
                 </div>
                 {editErrors.has("submit") && (
@@ -103,6 +119,10 @@ export default function EditableImageList({ images, refetch }: EditableImageList
                 <div className="flex flex-col gap-1 pt-4">
                   <span className="font-bold">MetaData:</span>
                   <span className="wrap-break-word">{image.metaData}</span>
+                </div>
+                <div className="flex flex-col gap-1 pt-4">
+                  <span className="font-bold">SortOrder:</span>
+                  <span className="wrap-break-word">{image.sortOrder}</span>
                 </div>
                 <div className="flex flex-col gap-1 pt-4">
                   <span className="font-bold">Updated At:</span>

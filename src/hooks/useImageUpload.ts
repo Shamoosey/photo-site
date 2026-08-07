@@ -9,6 +9,7 @@ export function useImageUpload(onSuccess?: () => void) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [caption, setCaption] = useState("");
   const [metaData, setMetaData] = useState("");
+  const [sortOrder, setSortOrder] = useState<number>(0);
   const [errors, setErrors] = useState<Map<string, string>>(new Map());
 
   const setCaptionValue = (value: string) => {
@@ -25,6 +26,15 @@ export function useImageUpload(onSuccess?: () => void) {
     setErrors((prev) => {
       const next = new Map(prev);
       next.delete("metaData");
+      return next;
+    });
+  };
+
+  const setSortOrderValue = (value: number) => {
+    setSortOrder(value);
+    setErrors((prev) => {
+      const next = new Map(prev);
+      next.delete("sortOrder");
       return next;
     });
   };
@@ -158,6 +168,7 @@ export function useImageUpload(onSuccess?: () => void) {
     setImagePreview(null);
     setCaption("");
     setMetaData("");
+    setSortOrder(0);
     setErrors(new Map());
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -186,6 +197,7 @@ export function useImageUpload(onSuccess?: () => void) {
       imageBase64: imagePreview as string,
       caption,
       metaData,
+      sortOrder,
     });
 
     reset();
@@ -199,11 +211,13 @@ export function useImageUpload(onSuccess?: () => void) {
     imagePreview,
     caption,
     metaData,
+    sortOrder,
     loading,
     imageUploading,
     errors,
     setCaptionValue,
     setMetaDataValue,
+    setSortOrderValue,
     handleImageChange,
     submit,
     reset,

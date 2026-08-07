@@ -34,7 +34,10 @@ export async function uploadImage(payload: UploadImagePayload) {
   return json.data;
 }
 
-export async function editImageData(imageId: string, payload: { caption: string; metaData: string }) {
+export async function editImageData(
+  imageId: string,
+  payload: { caption: string; metaData: string; sortOrder: number },
+) {
   const sessionToken = await getToken();
   if (!sessionToken) throw new Error("Unauthorized");
 
