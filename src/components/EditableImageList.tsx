@@ -118,7 +118,7 @@ export default function EditableImageList({ images, refetch }: EditableImageList
                 </div>
                 <div className="flex flex-col gap-1 pt-4">
                   <span className="font-bold">MetaData:</span>
-                  <span className="wrap-break-word">{image.metaData}</span>
+                  <span className="whitespace-pre-wrap">{image.metaData}</span>
                 </div>
                 <div className="flex flex-col gap-1 pt-4">
                   <span className="font-bold">SortOrder:</span>

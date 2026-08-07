@@ -50,12 +50,14 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
       </Button>
 
       <div className="flex flex-col items-center gap-3 max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
-        <img src={current.imageUrl} className="max-h-[80vh] max-w-[90vw] object-contain rounded shadow-2xl" />
+        <img src={current.imageUrl} className="max-h-[78vh] max-w-[90vw] object-contain rounded shadow-2xl" />
 
         {(current.caption || current.metaData) && (
-          <div className="text-center text-white px-4">
-            {current.caption && <p className="text-sm font-medium">{current.caption}</p>}
-            {current.metaData && <p className="text-xs text-white/50 mt-0.5">{current.metaData}</p>}
+          <div className="w-full max-w-[90vw] min-w-0 text-center text-white px-4">
+            {current.caption && <p className="text-sm font-medium wrap-break-word">{current.caption}</p>}
+            {current.metaData && (
+              <p className="text-xs text-white/50 mt-0.5 whitespace-pre-wrap wrap-break-word">{current.metaData}</p>
+            )}
           </div>
         )}
       </div>

@@ -66,8 +66,7 @@ export default function CreateImageForm({ refetch }: CreateImageFormProps) {
             className="border rounded p-2 w-full"
           />
           {errors.has("caption") && <span className="text-red-500 font-semibold text-sm">{errors.get("caption")}</span>}
-          <Input
-            type="text"
+          <textarea
             placeholder="MetaData"
             required
             value={metaData}
