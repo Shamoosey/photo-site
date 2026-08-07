@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 export default function Navbar() {
   return (
-    <section className="flex flex-row sm:flex-col justify-between items-center sm:items-start sm:max-w-50 sm:w-auto sm:min-h-screen sm:h-screen sm:sticky sm:top-0 sm:p-6 py-6 px-2 sm:pr-6 gap-2 ">
+    <section className="flex flex-row sm:flex-col justify-between items-center sm:items-start sm:max-w-50 sm:w-auto sm:min-h-screen sm:h-screen sm:sticky sm:top-0 sm:p-4 py-6 px-2 sm:pr-4 gap-2 ">
       <div className="text-3xl">
         <Link to={"/"}>
           <span>Shamus Osler</span>
