@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import { Layout } from "./pages/Layout";
 import Admin from "./pages/Admin";
-import About from "./pages/About";
 import { AdminRoute } from "./utils/AdminRoute";
 
 function App() {

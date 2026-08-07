@@ -4,7 +4,7 @@ import useLightbox from "../hooks/useLightbox";
 import { usePhotos } from "../hooks/usePhotos";
 
 export default function Home() {
-  const { images, sortedImages, isLoading, error } = usePhotos(undefined);
+  const { images, sortedImages, isLoading } = usePhotos(undefined);
   const { selectedIndex, closeLightbox, goNext, openLightbox, goPrev } = useLightbox(images ?? []);
 
   return (
