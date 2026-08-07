@@ -11,9 +11,9 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex flex-row sm:flex-col items-center  gap-2 text-lg ">
-        <Link to={"about"}>
+        {/* <Link to={"about"}>
           <span className="hover:underline">About</span>
-        </Link>
+        </Link> */}
         <div className="flex gap-2 justify-start sm:mt-auto ">
           <Link to={"https://www.instagram.com/shamus.osler"}>
             <FaInstagram />
