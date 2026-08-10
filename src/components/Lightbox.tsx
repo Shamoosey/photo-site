@@ -42,42 +42,55 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
 
   return (
     <div
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-4"
       onClick={onClose}>
       <Button
-        className="absolute top-4 right-4 text-white text-3xl leading-none hover:text-gray-300 transition-colors"
+        className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white text-2xl sm:text-3xl leading-none hover:text-gray-300 transition-colors"
         onClick={onClose}>
         <FaX />
       </Button>
 
-      <div className="flex flex-col items-center gap-3 max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
-        <img src={current.imageUrl} className="max-h-[78vh] max-w-[90vw] object-contain rounded shadow-2xl" />
+      <div
+        className="flex flex-col items-center gap-2 sm:gap-3 w-full max-w-[95vw] sm:max-w-[90vw] lg:max-w-[85vw] xl:max-w-[80vw] 2xl:max-w-[70vw] h-full max-h-[80vh] sm:max-h-[85vh] min-h-0"
+        onClick={(e) => e.stopPropagation()}>
+        <img
+          src={current.imageUrl}
+          className="flex-1 min-h-0 w-full max-w-full object-contain rounded drop-shadow-2xl"
+        />
 
         {(current.caption || current.metaData) && (
-          <div className="w-full max-w-[90vw] min-w-0 text-center text-white px-4">
-            {current.caption && <p className="text-sm font-medium wrap-break-word">{current.caption}</p>}
+          <div className="flex-shrink-0 w-full min-w-0 text-center text-white px-2 sm:px-4">
+            {current.caption && (
+              <p className="text-xs sm:text-sm md:text-base 2xl:text-lg font-medium wrap-break-word">
+                {current.caption}
+              </p>
+            )}
             {current.metaData && (
-              <p className="text-xs text-white/50 mt-0.5 whitespace-pre-wrap wrap-break-word">{current.metaData}</p>
+              <p className="text-[10px] sm:text-xs md:text-sm 2xl:text-base text-white/50 mt-0.5 whitespace-pre-wrap wrap-break-word line-clamp-4">
+                {current.metaData}
+              </p>
             )}
           </div>
         )}
       </div>
 
-      <div className="absolute bottom-4 flex items-center gap-4 text-white" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="absolute bottom-3 sm:bottom-4 flex items-center gap-3 sm:gap-4 text-white"
+        onClick={(e) => e.stopPropagation()}>
         <Button
           variant="icon"
-          className="text-xl leading-none hover:text-gray-300 transition-colors p-2"
+          className="text-lg sm:text-xl md:text-2xl leading-none hover:text-gray-300 transition-colors p-1.5 sm:p-2"
           onClick={onPrev}>
           <FaChevronLeft />
         </Button>
 
-        <span className="text-sm opacity-70">
+        <span className="text-xs sm:text-sm md:text-base opacity-70">
           {selectedIndex + 1} / {images.length}
         </span>
 
         <Button
           variant="icon"
-          className="text-xl leading-none hover:text-gray-300 transition-colors p-2"
+          className="text-lg sm:text-xl md:text-2xl leading-none hover:text-gray-300 transition-colors p-1.5 sm:p-2"
           onClick={onNext}>
           <FaChevronRight />
         </Button>
