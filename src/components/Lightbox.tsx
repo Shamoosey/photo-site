@@ -23,6 +23,17 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose, onNext, onPrev]);
 
+  useEffect(() => {
+    if (selectedIndex === null) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [selectedIndex]);
+
   if (selectedIndex === null) return null;
 
   const current = images[selectedIndex];
@@ -39,16 +50,6 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
         <FaX />
       </Button>
 
-      <Button
-        variant="icon"
-        className="absolute left-4 text-white text-4xl leading-none hover:text-gray-300 transition-colors p-4"
-        onClick={(e) => {
-          e.stopPropagation();
-          onPrev();
-        }}>
-        <FaChevronLeft />
-      </Button>
-
       <div className="flex flex-col items-center gap-3 max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
         <img src={current.imageUrl} className="max-h-[78vh] max-w-[90vw] object-contain rounded shadow-2xl" />
 
@@ -62,18 +63,24 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
         )}
       </div>
 
-      <Button
-        variant="icon"
-        className="absolute right-4 text-white text-4xl leading-none hover:text-gray-300 transition-colors p-4"
-        onClick={(e) => {
-          e.stopPropagation();
-          onNext();
-        }}>
-        <FaChevronRight />
-      </Button>
+      <div className="absolute bottom-4 flex items-center gap-4 text-white" onClick={(e) => e.stopPropagation()}>
+        <Button
+          variant="icon"
+          className="text-xl leading-none hover:text-gray-300 transition-colors p-2"
+          onClick={onPrev}>
+          <FaChevronLeft />
+        </Button>
 
-      <div className="absolute bottom-4 text-white text-sm opacity-70">
-        {selectedIndex + 1} / {images.length}
+        <span className="text-sm opacity-70">
+          {selectedIndex + 1} / {images.length}
+        </span>
+
+        <Button
+          variant="icon"
+          className="text-xl leading-none hover:text-gray-300 transition-colors p-2"
+          onClick={onNext}>
+          <FaChevronRight />
+        </Button>
       </div>
     </div>
   );
