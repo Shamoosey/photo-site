@@ -18,7 +18,7 @@ export default function Navbar() {
           <Link to={"https://www.instagram.com/shamus.osler"}>
             <FaInstagram />
           </Link>
-          <Link to={"https://github.com/Shamoosey"}>
+          <Link to={"https://github.com/Shamoosey/photo-site"}>
             <FaGithub />
           </Link>
         </div>
