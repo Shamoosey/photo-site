@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { Image } from "../types/Image";
 import { Button } from "./UI/Button";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -12,7 +12,12 @@ interface LightboxProps {
   onPrev: () => void;
 }
 
+const SWIPE_THRESHOLD = 50; // min horizontal px distance to count as a swipe
+const SWIPE_RESTRAINT = 75; // max vertical px drift allowed (avoids hijacking vertical scroll)
+
 export default function Lightbox({ images, selectedIndex, onClose, onNext, onPrev }: LightboxProps) {
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -40,10 +45,37 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
 
   if (!current) return null;
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStartRef.current;
+    if (!start) return;
+
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+
+    touchStartRef.current = null;
+
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+    if (Math.abs(deltaY) > SWIPE_RESTRAINT) return;
+
+    if (deltaX < 0) {
+      onNext();
+    } else {
+      onPrev();
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-4"
-      onClick={onClose}>
+      onClick={onClose}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}>
       <Button
         className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white text-2xl sm:text-3xl leading-none hover:text-gray-300 transition-colors"
         onClick={onClose}>
