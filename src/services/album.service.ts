@@ -3,6 +3,7 @@ import type { BaseResponse } from "../types/BaseResponse";
 import type { Album } from "../types/Album";
 import type { Image } from "../types/Image";
 import type { CreateAlbumPayload } from "../types/CreateAlbumPayload";
+import type { EditAlbum } from "../types/EditAlbum";
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
@@ -46,7 +47,7 @@ export async function createAlbum(payload: CreateAlbumPayload) {
   return json.data;
 }
 
-export async function editAlbum(albumId: string, payload: { caption: string; metaData: string; sortOrder: number }) {
+export async function editAlbum(albumId: string, payload: EditAlbum) {
   const sessionToken = await getToken();
   if (!sessionToken) throw new Error("Unauthorized");
 

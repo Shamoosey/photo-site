@@ -11,27 +11,25 @@ export function ImageGrid() {
   if (!id) {
     navigate("/");
   }
-
   const { data: albumData } = useAlbum(id!);
-  const { albumImages, isLoading, sortedImages } = useAlbumImages(albumData!);
-  const { selectedIndex, closeLightbox, goNext, openLightbox, goPrev } = useLightbox(albumImages!);
-
+  const { albumImages, isLoading, sortedImages } = useAlbumImages(id);
+  const { openLightbox, closeLightbox, goNext, goPrev, selectedIndex } = useLightbox(albumImages!);
+  console.log(albumData);
   return (
     <div className="flex flex-col">
       <header className="p-1 relative h-64 md:h-96 w-full overflow-hidden">
-        {sortedImages?.[0] && (
-          <img src={albumData?.coverImageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        )}
+        <img src={albumData?.coverImageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
+
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight drop-shadow">{albumData?.name}</h1>
           {albumData?.description && <p className="mt-2 max-w-2xl text-white/80 md:text-lg">{albumData.description}</p>}
         </div>
       </header>
-      {!isLoading && sortedImages ? (
+      {!isLoading && albumImages ? (
         <div className="flex flex-col">
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.5 py-2">
-            {sortedImages.map((image, i) => (
+            {albumImages.map((image, i) => (
               <div
                 key={i}
                 className="w-full aspect-square overflow-hidden cursor-pointer"
