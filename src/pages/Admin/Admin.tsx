@@ -4,19 +4,12 @@ import { useAlbums } from "../../hooks/useAlbums";
 import { Button, Input } from "../../components/UI";
 import { useNavigate } from "react-router";
 import { useCreateAlbum, useDeleteAlbum } from "../../hooks/useAlbumMutations";
+import { useUploadImage } from "../../hooks/useUploadImage";
 import { Textarea } from "../../components/UI/TextArea";
 
-const MAX_IMAGE_MB = 5;
+const MAX_INPUT_BYTES = 10 * 1024 * 1024; // match your Cloudinary plan's per-image limit
 
-const emptyForm = { name: "", description: "", coverImageBase64: "" };
-
-const fileToBase64 = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string); // "data:image/png;base64,...."
-    reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(file);
-  });
+const emptyForm = { name: "", description: "" };
 
 function Admin() {
   const { albums } = useAlbums();
@@ -24,10 +17,15 @@ function Admin() {
 
   const deleteAlbum = useDeleteAlbum();
   const createAlbum = useCreateAlbum();
+  const uploadCover = useUploadImage();
 
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [imageError, setImageError] = useState("");
+
+  const isSubmitting = uploadCover.isPending || createAlbum.isPending;
 
   const deleteAlbumClick = (id: string) => {
     if (confirm("Are you sure you would like to delete this album?")) {
@@ -39,46 +37,69 @@ function Admin() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const clearCover = () => {
+    if (coverPreview) URL.revokeObjectURL(coverPreview);
+    setCoverFile(null);
+    setCoverPreview(null);
+    uploadCover.reset(); // forget any previous upload result
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const file = input.files?.[0];
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
       setImageError("Please choose an image file.");
+      input.value = "";
       return;
     }
-    if (file.size > MAX_IMAGE_MB * 1024 * 1024) {
-      setImageError(`Image must be smaller than ${MAX_IMAGE_MB}MB.`);
+    if (file.size > MAX_INPUT_BYTES) {
+      setImageError(`Image must be smaller than ${MAX_INPUT_BYTES / (1024 * 1024)}MB.`);
+      input.value = "";
       return;
     }
 
-    try {
-      const base64 = await fileToBase64(file);
-      setForm((prev) => ({ ...prev, coverImageBase64: base64 }));
-      setImageError("");
-    } catch {
-      setImageError("Couldn't read that file. Please try another.");
-    }
+    clearCover(); // revoke the previous preview URL and reset the upload result
+    setCoverFile(file);
+    setCoverPreview(URL.createObjectURL(file));
+    setImageError("");
   };
 
   const closeForm = () => {
+    clearCover();
     setShowForm(false);
     setForm(emptyForm);
     setImageError("");
     createAlbum.reset();
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.coverImageBase64) {
+
+    if (isSubmitting) return;
+
+    if (!coverFile) {
       setImageError("Please choose a cover image.");
       return;
     }
+
+    let uploaded;
+    try {
+      // If a previous attempt uploaded this file but creating the album failed,
+      // reuse that result instead of uploading again.
+      uploaded = uploadCover.data ?? (await uploadCover.mutateAsync(coverFile));
+    } catch (err) {
+      setImageError(err instanceof Error ? err.message : "Couldn't upload that image.");
+      return;
+    }
+
     createAlbum.mutate(
       {
         name: form.name.trim(),
         description: form.description.trim(),
-        coverImageBase64: form.coverImageBase64,
+        coverImageUrl: uploaded.url,
+        coverImageId: uploaded.publicId,
       },
       { onSuccess: closeForm },
     );
@@ -131,22 +152,18 @@ function Admin() {
               className="block w-full text-sm file:mr-3 file:rounded file:border-0 file:bg-gray-200 file:px-3 file:py-2 file:text-sm"
             />
             {imageError && <p className="mt-1 text-sm text-red-600">{imageError}</p>}
-            {form.coverImageBase64 && (
-              <img
-                src={form.coverImageBase64}
-                alt="Cover preview"
-                className="mt-2 aspect-[2/1] w-full rounded object-cover"
-              />
+            {coverPreview && (
+              <img src={coverPreview} alt="Cover preview" className="mt-2 aspect-[2/1] w-full rounded object-cover" />
             )}
           </div>
 
           {createAlbum.isError && <p className="text-sm text-red-600">Couldn't create the album. Please try again.</p>}
 
           <div className="flex gap-2">
-            <Button type="submit" disabled={createAlbum.isPending}>
-              {createAlbum.isPending ? "Creating..." : "Create album"}
+            <Button type="submit" disabled={isSubmitting}>
+              {uploadCover.isPending ? "Uploading image..." : createAlbum.isPending ? "Creating..." : "Create album"}
             </Button>
-            <Button type="button" onClick={closeForm}>
+            <Button type="button" onClick={closeForm} disabled={isSubmitting}>
               Cancel
             </Button>
           </div>

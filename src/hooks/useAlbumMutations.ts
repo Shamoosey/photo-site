@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as AlbumService from "../services/album.service";
 import type { EditAlbum } from "../types/EditAlbum";
+import type { CreateAlbumPayload } from "../types/CreateAlbumPayload";
 
 export function useUpdateAlbum(albumId: string) {
   const queryClient = useQueryClient();
@@ -29,17 +30,13 @@ export function useDeleteAlbum() {
   });
 }
 
-export type NewAlbum = {
-  name: string;
-  description: string;
-  coverImageBase64: string;
-};
-
 export function useCreateAlbum() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (album: NewAlbum) => AlbumService.createAlbum(album),
+    mutationFn: (album: CreateAlbumPayload) => {
+      return AlbumService.createAlbum(album);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["albums"] }); // same key as useAlbums
     },

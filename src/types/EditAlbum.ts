@@ -1,6 +1,6 @@
 export interface EditAlbum {
   name?: string;
   description?: string;
-  coverImageBase64?: string;
-  images: string[];
+  coverImageUrl?: string;
+  coverImageId?: string;
 }

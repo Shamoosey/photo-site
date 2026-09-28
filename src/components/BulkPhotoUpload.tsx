@@ -16,7 +16,6 @@ export function BulkPhotoUpload({ albumId, startingSortOrder, onUploaded }: Bulk
 
   const {
     pendingImages,
-    isProcessingFiles,
     isUploading,
     uploadProgress,
     error,
@@ -43,8 +42,8 @@ export function BulkPhotoUpload({ albumId, startingSortOrder, onUploaded }: Bulk
     <div className="flex flex-col gap-4 rounded-lg border border-gray-300 p-4 dark:border-gray-600">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">Bulk upload photos</h3>
-        <Button type="button" onClick={() => fileInputRef.current?.click()} disabled={isProcessingFiles}>
-          {isProcessingFiles ? "Processing..." : "Select images"}
+        <Button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+          {isUploading ? "Processing..." : "Select images"}
         </Button>
         <input
           ref={fileInputRef}
