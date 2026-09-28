@@ -1,68 +1,47 @@
-import { useMemo, useState } from "react";
 import { LoadingSpinner } from "../components/UI";
 import { useAlbums } from "../hooks/useAlbums";
 import type { Album } from "../types/Album";
-import { cn } from "../utils/cn";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
+
+function AlbumCard({ album }: { album: Album }) {
+  return (
+    <Link to={`/albums/${album.id}`} className="group relative block w-full aspect-square overflow-hidden bg-black">
+      <img
+        src={album.coverImageUrl}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-colors duration-500 group-hover:from-black/90 group-hover:via-black/50" />
+
+      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight drop-shadow">{album.name}</h2>
+        {album.description && (
+          <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-500 ease-in-out group-hover:grid-rows-[1fr] group-hover:opacity-100 group-focus-visible:grid-rows-[1fr] group-focus-visible:opacity-100">
+            <p className="overflow-hidden mt-1 text-sm md:text-base text-white/80 line-clamp-3">{album.description}</p>
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+}
 
 export default function AlbumGrid() {
-  const navigate = useNavigate();
   const { albums, isLoading } = useAlbums();
-  const defaultAlbum = useMemo(() => albums?.find((x) => x.defaultAlbum), [albums]);
-  const [hoveringAlbum, setIsHovering] = useState<Album | null>(null);
 
-  const handleMouseEnter = (a: Album) => {
-    setIsHovering(a);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovering(null);
-  };
-
-  const isHoveringAlbum = (album: Album) => {
-    let hovering = false;
-    if (album == hoveringAlbum) {
-      hovering = true;
-    }
-    return hovering;
-  };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center mt-80">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col">
-      {!isLoading ? (
-        <div className="flex flex-col">
-          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 p-1">
-            {albums?.map((album, i) => (
-              <div
-                key={i}
-                onClick={() => navigate(`/albums/${album.id}`)}
-                className="w-full relative aspect-square overflow-hidden cursor-pointer bg-black"
-                onMouseEnter={() => handleMouseEnter(album)}
-                onMouseLeave={() => handleMouseLeave()}>
-                <img
-                  src={album.coverImageUrl}
-                  className={cn(
-                    "w-full h-full object-cover transition-all duration-500 ease-in-out hover:scale-105",
-                    isHoveringAlbum(album) ? "opacity-40" : "opacity-100",
-                  )}
-                />
-                <div
-                  className={cn(
-                    "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white transition-opacity duration-500 ease-in-out",
-                    isHoveringAlbum(album) ? "opacity-100" : "opacity-0 pointer-events-none",
-                  )}>
-                  <div>{album.name}</div>
-                  <div>{album.description}</div>
-                </div>
-              </div>
-            ))}
-          </section>
-        </div>
-      ) : (
-        <div className="flex justify-center mt-80">
-          <LoadingSpinner />
-        </div>
-      )}
-    </div>
+    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.5 p-1 pr-4 pt-2">
+      {albums?.map((album) => (
+        <AlbumCard key={album.id} album={album} />
+      ))}
+    </section>
   );
 }

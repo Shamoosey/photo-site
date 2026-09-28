@@ -1,6 +1,7 @@
 import { Show, UserButton } from "@clerk/react";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router";
+import { Button } from "./UI";
 
 export default function Navbar() {
   return (
@@ -20,6 +21,9 @@ export default function Navbar() {
           </Link>
         </div>
         <Show when={"signed-in"}>
+          <Link to={"/admin"}>
+            <Button>Admin</Button>
+          </Link>
           <UserButton />
         </Show>
       </div>

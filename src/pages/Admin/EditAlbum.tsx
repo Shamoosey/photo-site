@@ -2,8 +2,11 @@ import { Navigate, useNavigate, useParams } from "react-router";
 import { FaAngleLeft } from "react-icons/fa6";
 import { Button, Input } from "../../components/UI";
 import { useAlbum } from "../../hooks/useAlbum";
+import { useAlbumImages } from "../../hooks/useAlbumImages";
 import type { Album } from "../../types/Album";
 import { useEditAlbumForm } from "../../hooks/useEditAlbumForm";
+import { BulkPhotoUpload } from "../../components/BulkPhotoUpload";
+import { AlbumPhotoList } from "../../components/AlbumPhotoList";
 
 const fieldClass = "rounded border border-gray-300 px-3 py-2 text-base dark:border-gray-600";
 
@@ -21,6 +24,7 @@ function EditAlbumLoader({ id }: { id: string }) {
   if (!album.data) {
     return <div>{album.isLoading ? "Loading album data..." : "Album not found."}</div>;
   }
+
   return <EditAlbumForm key={album.data.id} album={album.data} />;
 }
 
@@ -30,6 +34,9 @@ function EditAlbumForm({ album }: { album: Album }) {
 
   const { form, coverPreview, isSaving, isProcessingCover, error, handleChange, handleCoverChange, handleSubmit } =
     useEditAlbumForm(album, { onSaved: goBack });
+
+  // Same query key as AlbumPhotoList, so React Query dedupes this into one request.
+  const { albumImages } = useAlbumImages(album.id);
 
   return (
     <div>
@@ -88,6 +95,11 @@ function EditAlbumForm({ album }: { album: Album }) {
           </Button>
         </div>
       </form>
+
+      <div className="flex flex-col gap-6 px-6 pb-6">
+        <BulkPhotoUpload albumId={album.id} startingSortOrder={albumImages?.length ?? 0} />
+        <AlbumPhotoList albumId={album.id} />
+      </div>
     </div>
   );
 }
