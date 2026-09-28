@@ -28,3 +28,20 @@ export function useDeleteAlbum() {
     },
   });
 }
+
+export type NewAlbum = {
+  name: string;
+  description: string;
+  coverImageBase64: string;
+};
+
+export function useCreateAlbum() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (album: NewAlbum) => AlbumService.createAlbum(album),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["albums"] }); // same key as useAlbums
+    },
+  });
+}
