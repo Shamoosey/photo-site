@@ -1,6 +1,7 @@
 import { Show, UserButton } from "@clerk/react";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router";
+import { Button } from "./UI";
 
 export default function Navbar() {
   return (
@@ -11,9 +12,6 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex flex-row sm:flex-col items-center  gap-2 text-lg ">
-        {/* <Link to={"about"}>
-          <span className="hover:underline">About</span>
-        </Link> */}
         <div className="flex gap-2 justify-start sm:mt-auto ">
           <Link to={"https://www.instagram.com/shamus.osler"}>
             <FaInstagram />
@@ -23,6 +21,9 @@ export default function Navbar() {
           </Link>
         </div>
         <Show when={"signed-in"}>
+          <Link to={"/admin"}>
+            <Button>Admin</Button>
+          </Link>
           <UserButton />
         </Show>
       </div>

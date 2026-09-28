@@ -6,7 +6,7 @@ import type { UploadImagePayload } from "../types/UploadImagePayload";
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
 export async function getAllPhotos() {
-  const res: Response = await fetch(`${BASE_URL}/photo`);
+  const res: Response = await fetch(`${BASE_URL}/image`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch images");
@@ -16,11 +16,29 @@ export async function getAllPhotos() {
   return json.data;
 }
 
+export async function uploadBulkImages(payload: UploadImagePayload[]) {
+  const sessionToken = await getToken();
+  if (!sessionToken) throw new Error("Unauthorized");
+
+  const res: Response = await fetch(`${BASE_URL}/image/bulk`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to upload image");
+  }
+
+  const json: BaseResponse<Image> = await res.json();
+  return json.data;
+}
+
 export async function uploadImage(payload: UploadImagePayload) {
   const sessionToken = await getToken();
   if (!sessionToken) throw new Error("Unauthorized");
 
-  const res: Response = await fetch(`${BASE_URL}/photo`, {
+  const res: Response = await fetch(`${BASE_URL}/image`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` },
     body: JSON.stringify(payload),
@@ -41,7 +59,7 @@ export async function editImageData(
   const sessionToken = await getToken();
   if (!sessionToken) throw new Error("Unauthorized");
 
-  const res: Response = await fetch(`${BASE_URL}/photo/${imageId}`, {
+  const res: Response = await fetch(`${BASE_URL}/image/${imageId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` },
     body: JSON.stringify(payload),
@@ -59,7 +77,7 @@ export async function deleteImage(imageId: string) {
   const sessionToken = await getToken();
   if (!sessionToken) throw new Error("Unauthorized");
 
-  const res: Response = await fetch(`${BASE_URL}/photo/${imageId}`, {
+  const res: Response = await fetch(`${BASE_URL}/image/${imageId}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${sessionToken}` },
   });

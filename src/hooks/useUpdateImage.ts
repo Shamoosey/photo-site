@@ -30,9 +30,7 @@ export function useUpdateImage(refetch: () => void) {
 
   const validate = () => {
     const newErrors = new Map<string, string>();
-    if (!caption?.trim()) newErrors.set("caption", "Caption is required");
-    if (!metaData?.trim()) newErrors.set("metaData", "MetaData is required");
-    if (!metaData?.trim()) newErrors.set("sortOrder", "SortOrder is required");
+    if (!sortOrder) newErrors.set("sortOrder", "SortOrder is required");
     setErrors(newErrors);
     return newErrors.size === 0;
   };
