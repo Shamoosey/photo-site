@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import { useCreateAlbum, useDeleteAlbum } from "../../hooks/useAlbumMutations";
 import { Textarea } from "../../components/UI/TextArea";
 
-const MAX_IMAGE_MB = 2;
+const MAX_IMAGE_MB = 5;
 
 const emptyForm = { name: "", description: "", coverImageBase64: "" };
 
