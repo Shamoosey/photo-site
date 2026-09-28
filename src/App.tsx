@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 import { Layout } from "./pages/Layout";
 import Admin from "./pages/Admin/Admin";
 import { AdminRoute } from "./utils/AdminRoute";
@@ -8,7 +8,7 @@ import EditAlbum from "./pages/Admin/EditAlbum";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<AlbumGrid />} />
@@ -31,7 +31,7 @@ function App() {
           />
         </Route>
       </Routes>
-    </>
+    </BrowserRouter>
   );
 }
 
