@@ -32,7 +32,7 @@ function EditAlbumForm({ album }: { album: Album }) {
   const navigate = useNavigate();
   const goBack = () => navigate("/admin");
 
-  const { form, coverPreview, isSaving, isProcessingCover, error, handleChange, handleCoverChange, handleSubmit } =
+  const { form, coverPreview, isSaving, isUploadingCover, error, handleChange, handleCoverChange, handleSubmit } =
     useEditAlbumForm(album, { onSaved: goBack });
 
   // Same query key as AlbumPhotoList, so React Query dedupes this into one request.
@@ -89,7 +89,7 @@ function EditAlbumForm({ album }: { album: Album }) {
           </Button>
           <Button
             type="submit"
-            disabled={isSaving || isProcessingCover}
+            disabled={isSaving || isUploadingCover}
             className="rounded bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-600">
             {isSaving ? "Saving..." : "Save changes"}
           </Button>

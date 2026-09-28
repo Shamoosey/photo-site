@@ -1,5 +1,6 @@
 export interface CreateAlbumPayload {
   name: string;
   description: string;
-  coverImageBase64: string;
+  coverImageUrl: string;
+  coverImageId: string;
 }
