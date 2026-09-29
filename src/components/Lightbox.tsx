@@ -87,6 +87,9 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
         onClick={(e) => e.stopPropagation()}>
         <img
           src={current.imageUrl}
+          onContextMenu={(e) => {
+            e.preventDefault();
+          }}
           className="flex-1 min-h-0 w-full max-w-full object-contain rounded drop-shadow-2xl"
         />
 
