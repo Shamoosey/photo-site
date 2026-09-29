@@ -36,6 +36,9 @@ export function ImageGrid() {
                 onClick={() => openLightbox(i)}>
                 <img
                   src={image.imageUrl}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                  }}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
               </div>
