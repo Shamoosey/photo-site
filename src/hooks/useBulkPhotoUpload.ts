@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import * as PhotoService from "../services/photo.service";
 import { uploadImage, type UploadedImage } from "../services/upload.service";
+import { prepareImageForUpload } from "../utils/prepareImage";
 
 export interface PendingImage {
   id: string;
@@ -142,6 +143,22 @@ export function useBulkPhotoUpload(albumId: string, options: UseBulkPhotoUploadO
     setError(null);
   }, []);
 
+  const reorderImages = useCallback((fromId: string, toId: string) => {
+    setPendingImages((prev) => {
+      const from = prev.findIndex((img) => img.id === fromId);
+      const to = prev.findIndex((img) => img.id === toId);
+
+      if (from === -1 || to === -1 || from === to) return prev;
+
+      const next = [...prev];
+      const [moved] = next.splice(from, 1);
+
+      next.splice(to, 0, moved);
+
+      return reindex(next);
+    });
+  }, []);
+
   const uploadAll = useCallback(async () => {
     if (pendingImages.length === 0) return;
 
@@ -156,7 +173,8 @@ export function useBulkPhotoUpload(albumId: string, options: UseBulkPhotoUploadO
       setUploadProgress({ current: 0, total: toUpload.length });
 
       const results = await settleWithConcurrency(toUpload, UPLOAD_CONCURRENCY, async (img) => {
-        const uploaded = await uploadImage(img.file);
+        const processed = await prepareImageForUpload(img.file);
+        const uploaded = await uploadImage(processed);
 
         setUploadProgress({ current: ++completed, total: toUpload.length });
 
@@ -237,6 +255,7 @@ export function useBulkPhotoUpload(albumId: string, options: UseBulkPhotoUploadO
     uploadProgress,
     error,
     addFiles,
+    reorderImages,
     removeImage,
     updateImageField,
     moveImage,
