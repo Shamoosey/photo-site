@@ -141,54 +141,55 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
               }}
               onDragEnd={resetDrag}
               className={[
-                "flex flex-col gap-2 rounded border border-gray-200 p-3 dark:border-gray-700",
+                "flex flex-col justify-between gap-2 rounded border border-gray-200 p-3 dark:border-gray-700",
                 draggedId === image.id ? "opacity-40" : "",
                 dragOverId === image.id && draggedId !== image.id ? "ring-2 ring-blue-500" : "",
               ].join(" ")}>
               <div className="relative">
-                <img src={image.imageUrl} alt={image.caption} className="h-40 w-full rounded object-cover" />
+                <img src={image.imageUrl} alt={image.caption} className="w-full rounded object-cover" />
                 <span
                   className="absolute left-2 top-2 cursor-grab rounded bg-black/50 p-1.5 text-white"
                   aria-hidden="true">
                   <FaGripVertical />
                 </span>
               </div>
+              <div>
+                <p className="truncate text-sm font-medium">{image.caption || "No caption"}</p>
+                <p className="truncate text-xs text-gray-500">{image.metaData || "No meta data"}</p>
 
-              <p className="truncate text-sm font-medium">{image.caption || "No caption"}</p>
-              <p className="truncate text-xs text-gray-500">{image.metaData || "No meta data"}</p>
+                <div className="mt-1 flex items-center justify-between gap-2">
+                  <div className="flex gap-1">
+                    <Button
+                      type="button"
+                      variant="icon"
+                      aria-label="Move photo earlier"
+                      onClick={() => moveImage(image.id, "up")}
+                      disabled={index === 0 || isReordering(image.id)}>
+                      <FaArrowUp />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="icon"
+                      aria-label="Move photo later"
+                      onClick={() => moveImage(image.id, "down")}
+                      disabled={index === orderedImages.length - 1 || isReordering(image.id)}>
+                      <FaArrowDown />
+                    </Button>
+                  </div>
 
-              <div className="mt-1 flex items-center justify-between gap-2">
-                <div className="flex gap-1">
-                  <Button
-                    type="button"
-                    variant="icon"
-                    aria-label="Move photo earlier"
-                    onClick={() => moveImage(image.id, "up")}
-                    disabled={index === 0 || isReordering(image.id)}>
-                    <FaArrowUp />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="icon"
-                    aria-label="Move photo later"
-                    onClick={() => moveImage(image.id, "down")}
-                    disabled={index === orderedImages.length - 1 || isReordering(image.id)}>
-                    <FaArrowDown />
-                  </Button>
-                </div>
-
-                <div className="flex gap-1">
-                  <Button type="button" variant="icon" aria-label="Edit photo" onClick={() => startEdit(image)}>
-                    <FaPen />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="icon"
-                    aria-label="Delete photo"
-                    onClick={() => deleteImage(image.id)}
-                    disabled={deletingId === image.id}>
-                    <FaTrash />
-                  </Button>
+                  <div className="flex gap-1">
+                    <Button type="button" variant="icon" aria-label="Edit photo" onClick={() => startEdit(image)}>
+                      <FaPen />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="icon"
+                      aria-label="Delete photo"
+                      onClick={() => deleteImage(image.id)}
+                      disabled={deletingId === image.id}>
+                      <FaTrash />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
