@@ -36,6 +36,7 @@ export function ImageGrid() {
                   className="w-full aspect-square overflow-hidden cursor-pointer"
                   onClick={() => openLightbox(i)}>
                   <img
+                    loading="lazy"
                     src={image.imageUrl}
                     onContextMenu={(e) => {
                       e.preventDefault();
