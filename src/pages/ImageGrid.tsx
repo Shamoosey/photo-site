@@ -41,7 +41,7 @@ export function ImageGrid() {
                     onContextMenu={(e) => {
                       e.preventDefault();
                     }}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="w-full h-full object-cover scale-[1.055] transition-transform duration-300 hover:scale-[1.106]"
                   />
                 </div>
               ))}
