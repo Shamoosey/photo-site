@@ -7,7 +7,7 @@ function AlbumCard({ album }: { album: Album }) {
   return (
     <Link
       to={`/albums/${album.id}`}
-      className="group relative block w-full h-50 md:h-100 aspect-square overflow-hidden bg-black">
+      className="group relative block w-full h-50 sm:h-75 aspect-square overflow-hidden bg-black">
       <img
         src={album.coverImageUrl}
         alt=""
@@ -40,7 +40,7 @@ export default function AlbumGrid() {
   }
 
   return (
-    <section className="grid grid-cols-1 gap-1.5 p-1 md:pr-4 pt-2">
+    <section className="grid grid-cols-1 gap-1.5 p-1 2xl:grid-cols-2 md:pr-4 pt-2">
       {albums?.map((album) => (
         <AlbumCard key={album.id} album={album} />
       ))}
