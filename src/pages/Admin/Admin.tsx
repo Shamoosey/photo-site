@@ -110,10 +110,10 @@ function Admin() {
       <div className="mb-4 flex items-center justify-between pr-4">
         <h1 className="text-xl font-semibold">Albums</h1>
         {!showForm && (
-          <Button onClick={() => setShowForm(true)}>
+          <div className="flex justify-center cursor-pointer" onClick={() => setShowForm(true)}>
             <TbPlus className="mr-1 h-5 w-5" />
-            New album
-          </Button>
+            <span>New album</span>
+          </div>
         )}
       </div>
 
