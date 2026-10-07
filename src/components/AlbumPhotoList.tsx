@@ -1,4 +1,5 @@
-import { FaArrowDown, FaArrowUp, FaCheck, FaPen, FaTrash, FaXmark } from "react-icons/fa6";
+import { useState } from "react";
+import { FaArrowDown, FaArrowUp, FaCheck, FaGripVertical, FaPen, FaTrash, FaXmark } from "react-icons/fa6";
 import { Button, Input } from "./UI";
 import { useAlbumImages } from "../hooks/useAlbumImages";
 import { useUpdateImage } from "../hooks/useUpdateImage";
@@ -32,7 +33,31 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
 
   const { deletingId, deleteImage } = useDeleteImage(refetch);
 
-  const { orderedImages, moveImage, isReordering, error: reorderError } = useReorderAlbumImages(albumImages, refetch);
+  const {
+    orderedImages,
+    moveImage,
+    moveImageTo,
+    isReordering,
+    error: reorderError,
+  } = useReorderAlbumImages(albumImages, refetch);
+
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+
+  const resetDrag = () => {
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+
+  const handleDrop = (targetIndex: number) => {
+    if (draggedId) {
+      const fromIndex = orderedImages.findIndex((img: Image) => img.id === draggedId);
+      if (fromIndex !== -1 && fromIndex !== targetIndex) {
+        moveImageTo(draggedId, targetIndex);
+      }
+    }
+    resetDrag();
+  };
 
   if (isLoading) return <p className="text-sm text-gray-500">Loading photos...</p>;
   if (error) return <p className="text-sm text-red-500">Failed to load photos.</p>;
@@ -96,8 +121,38 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
               </div>
             </div>
           ) : (
-            <div key={image.id} className="flex flex-col gap-2 rounded border border-gray-200 p-3 dark:border-gray-700">
-              <img src={image.imageUrl} alt={image.caption} className="h-40 w-full rounded object-cover" />
+            <div
+              key={image.id}
+              draggable={!isReordering(image.id)}
+              onDragStart={(e) => {
+                setDraggedId(image.id);
+                e.dataTransfer.effectAllowed = "move";
+                e.dataTransfer.setData("text/plain", image.id);
+              }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+                if (dragOverId !== image.id) setDragOverId(image.id);
+              }}
+              onDragLeave={() => dragOverId === image.id && setDragOverId(null)}
+              onDrop={(e) => {
+                e.preventDefault();
+                handleDrop(index);
+              }}
+              onDragEnd={resetDrag}
+              className={[
+                "flex flex-col gap-2 rounded border border-gray-200 p-3 dark:border-gray-700",
+                draggedId === image.id ? "opacity-40" : "",
+                dragOverId === image.id && draggedId !== image.id ? "ring-2 ring-blue-500" : "",
+              ].join(" ")}>
+              <div className="relative">
+                <img src={image.imageUrl} alt={image.caption} className="h-40 w-full rounded object-cover" />
+                <span
+                  className="absolute left-2 top-2 cursor-grab rounded bg-black/50 p-1.5 text-white"
+                  aria-hidden="true">
+                  <FaGripVertical />
+                </span>
+              </div>
 
               <p className="truncate text-sm font-medium">{image.caption || "No caption"}</p>
               <p className="truncate text-xs text-gray-500">{image.metaData || "No meta data"}</p>
