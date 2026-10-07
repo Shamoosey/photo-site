@@ -13,5 +13,7 @@ export function useAlbumImages(albumId: string | undefined) {
     enabled: !!albumId,
   });
 
-  return { isLoading, error, albumImages, refetch };
+  const sortedImages = albumImages?.sort((a, b) => a.sortOrder - b.sortOrder);
+
+  return { isLoading, error, albumImages, sortedImages, refetch };
 }

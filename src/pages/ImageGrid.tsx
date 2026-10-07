@@ -12,9 +12,8 @@ export function ImageGrid() {
     navigate("/");
   }
   const { data: albumData } = useAlbum(id!);
-  const { albumImages, isLoading } = useAlbumImages(id);
+  const { albumImages, sortedImages, isLoading } = useAlbumImages(id);
   const { openLightbox, closeLightbox, goNext, goPrev, selectedIndex } = useLightbox(albumImages!);
-  console.log(albumData);
   return (
     <div className="flex flex-col p-1 md:pr-4 pt-2">
       <header className="relative h-72 sm:h-96 md:h-115 w-full overflow-hidden">
@@ -26,10 +25,10 @@ export function ImageGrid() {
           {albumData?.description && <p className="mt-2 max-w-2xl text-white/80 md:text-lg">{albumData.description}</p>}
         </div>
       </header>
-      {!isLoading && albumImages ? (
+      {!isLoading && sortedImages ? (
         <div className="flex flex-col">
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.5 py-2">
-            {albumImages.map((image, i) => (
+            {sortedImages.map((image, i) => (
               <div
                 key={i}
                 className="w-full aspect-square overflow-hidden cursor-pointer"
@@ -46,7 +45,7 @@ export function ImageGrid() {
           </section>
 
           <Lightbox
-            images={albumImages}
+            images={sortedImages}
             selectedIndex={selectedIndex}
             onClose={closeLightbox}
             onNext={goNext}

@@ -7,7 +7,7 @@ function AlbumCard({ album }: { album: Album }) {
   return (
     <Link
       to={`/albums/${album.id}`}
-      className="group relative block w-full h-50 sm:h-75 aspect-square overflow-hidden bg-black">
+      className="group relative block w-full h-60 sm:h-100 aspect-square overflow-hidden bg-black">
       <img
         src={album.coverImageUrl}
         alt=""
