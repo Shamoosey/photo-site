@@ -40,7 +40,7 @@ export default function AlbumGrid() {
   }
 
   return (
-    <section className="grid grid-cols-1 gap-1.5 p-1 pr-4 pt-2">
+    <section className="grid grid-cols-1 gap-1.5 p-1 md:pr-4 pt-2">
       {albums?.map((album) => (
         <AlbumCard key={album.id} album={album} />
       ))}
