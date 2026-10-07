@@ -3,7 +3,7 @@ export interface Album {
   name: string;
   description: string;
   coverImageUrl: string;
-  defaultAlbum: string;
+  defaultAlbum: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

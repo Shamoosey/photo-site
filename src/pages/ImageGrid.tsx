@@ -16,8 +16,8 @@ export function ImageGrid() {
   const { openLightbox, closeLightbox, goNext, goPrev, selectedIndex } = useLightbox(albumImages!);
   console.log(albumData);
   return (
-    <div className="flex flex-col p-1 pr-4 pt-2">
-      <header className="relative h-64 md:h-96 w-full overflow-hidden">
+    <div className="flex flex-col p-1 md:pr-4 pt-2">
+      <header className="relative h-72 md:h-96 w-full overflow-hidden">
         <img src={albumData?.coverImageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
