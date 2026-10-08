@@ -31,7 +31,7 @@ function AlbumCard({ album }: { album: Album }) {
 }
 
 export default function AlbumGrid() {
-  const { albums, sortedAlbums, isLoading } = useAlbums();
+  const { sortedAlbums, isLoading } = useAlbums();
 
   if (isLoading) {
     return (
