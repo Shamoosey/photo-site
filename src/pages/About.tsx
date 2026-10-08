@@ -6,7 +6,7 @@ export default function AboutPage() {
       alt: "Portrait of me :)",
     },
     bio: [
-      "I've been shooting film since I got my first camera in 2017, I love how it makes you slow down and be more intentional with each photograph. I've created this website to showcase photos I've taken over the years that including some I haven't shared anywhere.",
+      "I've been shooting film since I got my first camera in 2017, I love how it makes you slow down and be more intentional with each photograph. I've created this website to showcase photos I've taken over the years including some I haven't shared anywhere.",
       "All photos featured on this site were shot on film :)",
     ],
   };
