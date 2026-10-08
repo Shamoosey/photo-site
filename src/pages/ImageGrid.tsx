@@ -16,14 +16,16 @@ export function ImageGrid() {
   const { albumImages, sortedImages, isLoading } = useAlbumImages(id);
   const { openLightbox, closeLightbox, goNext, goPrev, selectedIndex } = useLightbox(albumImages!);
   return (
-    <div className="flex flex-col p-1 md:pr-4 pt-2">
+    <div className="flex flex-col p-1 md:pr-4 pt-2 bg-cream">
       <header className="relative h-72 sm:h-96 md:h-115 w-full overflow-hidden">
         <img src={albumData?.coverImageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight drop-shadow">{albumData?.name}</h1>
-          {albumData?.description && <p className="mt-2 max-w-2xl text-white/80 md:text-lg">{albumData.description}</p>}
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 ">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight drop-shadow text-cream">{albumData?.name}</h1>
+          {albumData?.description && (
+            <p className="mt-2 max-w-2xl text-cream-darker md:text-lg">{albumData.description}</p>
+          )}
         </div>
       </header>
       {!isLoading && sortedImages ? (

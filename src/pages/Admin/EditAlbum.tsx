@@ -35,7 +35,6 @@ function EditAlbumForm({ album }: { album: Album }) {
   const { form, coverPreview, isSaving, isUploadingCover, error, handleChange, handleCoverChange, handleSubmit } =
     useEditAlbumForm(album, { onSaved: goBack });
 
-  // Same query key as AlbumPhotoList, so React Query dedupes this into one request.
   const { albumImages } = useAlbumImages(album.id);
 
   return (
@@ -84,13 +83,13 @@ function EditAlbumForm({ album }: { album: Album }) {
             type="button"
             onClick={goBack}
             disabled={isSaving}
-            className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+            className="rounded bg-red-500 px-4 py-2 text-cream hover:bg-red-600">
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={isSaving || isUploadingCover}
-            className="rounded bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-600">
+            className="rounded bg-emerald-500 px-4 py-2 text-cream hover:bg-emerald-600">
             {isSaving ? "Saving..." : "Save changes"}
           </Button>
         </div>

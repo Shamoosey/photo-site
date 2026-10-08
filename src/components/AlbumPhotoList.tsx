@@ -148,7 +148,7 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
               <div className="relative">
                 <img src={image.imageUrl} alt={image.caption} className="w-full rounded object-cover" />
                 <span
-                  className="absolute left-2 top-2 cursor-grab rounded bg-black/50 p-1.5 text-white"
+                  className="absolute left-2 top-2 cursor-grab rounded bg-black/50 p-1.5 text-cream"
                   aria-hidden="true">
                   <FaGripVertical />
                 </span>

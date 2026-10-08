@@ -176,12 +176,12 @@ function Admin() {
             <div className="relative aspect-[2/1] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
               <img src={album.coverImageUrl} alt={album.name} className="h-full w-full object-cover " />
 
-              <div className="absolute right-2 top-2 bg-white rounded">
+              <div className="absolute right-2 top-2 bg-cream rounded">
                 <Button variant="icon" aria-label={`Delete ${album.name}`} onClick={() => deleteAlbumClick(album.id)}>
                   <TbTrash className="h-5 w-5" />
                 </Button>
               </div>
-              <div className="absolute left-2 top-2 bg-white rounded">
+              <div className="absolute left-2 top-2 bg-cream rounded">
                 <Button
                   variant="icon"
                   aria-label={`Edit ${album.name}`}
@@ -191,8 +191,8 @@ function Admin() {
               </div>
             </div>
 
-            <h2 className="mt-2 truncate text-2xl">{album.name}</h2>
-            <h3 className="line-clamp-2 text-sm text-gray-600 dark:text-gray-400">{album.description}</h3>
+            <h2 className="mt-2 truncate text-2xl text-black-font">{album.name}</h2>
+            <h3 className="line-clamp-2 text-sm text-black-font">{album.description}</h3>
           </article>
         ))}
       </div>
