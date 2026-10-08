@@ -68,6 +68,18 @@ function EditAlbumForm({ album }: { album: Album }) {
         </label>
 
         <label className="flex flex-col gap-1 text-sm">
+          Sort Order
+          <Input
+            name="sortOrder"
+            value={form.sortOrder}
+            type="number"
+            onChange={handleChange}
+            required
+            className={fieldClass}
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm">
           Cover image
           <Input type="file" accept="image/*" onChange={handleCoverChange} className={fieldClass} />
         </label>

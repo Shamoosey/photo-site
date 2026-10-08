@@ -7,12 +7,12 @@ import { useCreateAlbum, useDeleteAlbum } from "../../hooks/useAlbumMutations";
 import { useUploadImage } from "../../hooks/useUploadImage";
 import { Textarea } from "../../components/UI/TextArea";
 
-const MAX_INPUT_BYTES = 10 * 1024 * 1024; // match your Cloudinary plan's per-image limit
+const MAX_INPUT_BYTES = 10 * 1024 * 1024;
 
 const emptyForm = { name: "", description: "" };
 
 function Admin() {
-  const { albums } = useAlbums();
+  const { sortedAlbums } = useAlbums();
   const navigate = useNavigate();
 
   const deleteAlbum = useDeleteAlbum();
@@ -171,7 +171,7 @@ function Admin() {
       )}
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-6 pr-4">
-        {albums?.map((album) => (
+        {sortedAlbums?.map((album) => (
           <article key={album.id} className="group">
             <div className="relative aspect-[2/1] overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
               <img src={album.coverImageUrl} alt={album.name} className="h-full w-full object-cover " />

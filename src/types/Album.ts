@@ -4,6 +4,7 @@ export interface Album {
   description: string;
   coverImageUrl: string;
   defaultAlbum: boolean;
+  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
 }

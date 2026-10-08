@@ -17,6 +17,7 @@ export function useEditAlbumForm(album: Album, { onSaved }: UseEditAlbumFormOpti
   const [form, setForm] = useState({
     name: album.name,
     description: album.description ?? "",
+    sortOrder: album.sortOrder ?? 0,
   });
 
   const [coverPreview, setCoverPreview] = useState<string | null>(album.coverImageUrl ?? null);
@@ -91,9 +92,13 @@ export function useEditAlbumForm(album: Album, { onSaved }: UseEditAlbumFormOpti
       }
     }
 
+    console.log(form.sortOrder);
+    console.log(isNaN(form.sortOrder));
+
     const payload: EditAlbum = {
       name: form.name.trim(),
       description: form.description,
+      sortOrder: form.sortOrder,
       ...cover,
     };
 
