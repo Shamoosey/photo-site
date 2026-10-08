@@ -20,7 +20,7 @@ export default function AboutPage() {
               <img
                 src={photo.src}
                 alt={photo.alt}
-                className="block aspect-3/2 w-full object-cover contrast-[1.02] grayscale-15% md:aspect-4/5"
+                className="block w-full object-cover contrast-[1.02] grayscale-15% md:aspect-4/5"
               />
             </div>
           </figure>
