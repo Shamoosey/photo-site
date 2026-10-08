@@ -20,9 +20,12 @@ export function useAlbums() {
     },
   });
 
+  const sortedAlbums = albums?.sort((a, b) => a.sortOrder - b.sortOrder);
+
   return {
     isLoading,
     error,
     albums,
+    sortedAlbums,
   };
 }
