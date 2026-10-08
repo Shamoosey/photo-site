@@ -5,18 +5,21 @@ import { Button } from "./UI";
 
 export default function Navbar() {
   return (
-    <section className="flex flex-row sm:flex-col justify-between items-center sm:items-start sm:max-w-40 sm:w-auto sm:min-h-screen sm:h-screen sm:sticky sm:top-0 sm:p-4 py-6 px-2 sm:pr-4 gap-2 ">
+    <section className="flex flex-row sm:flex-col justify-between items-center sm:items-start sm:max-w-40 sm:w-auto sm:min-h-screen sm:h-screen sm:sticky sm:top-0 sm:p-4 py-6 px-2 sm:pr-4 gap-2 text-black-font bg-cream">
       <div className="text-3xl">
         <Link to={"/"}>
           <span>Shamus Osler</span>
         </Link>
       </div>
       <div className="flex flex-row sm:flex-col items-center  gap-2 text-lg ">
+        <div>
+          <Link to={"/about"}>About</Link>
+        </div>
         <div className="flex gap-2 justify-start sm:mt-auto ">
           <Link to={"https://www.instagram.com/shamus.osler"}>
             <FaInstagram />
           </Link>
-          <Link to={"https://github.com/Shamoosey/photo-site"}>
+          <Link to={"https://github.com/Shamoosey"}>
             <FaGithub />
           </Link>
         </div>

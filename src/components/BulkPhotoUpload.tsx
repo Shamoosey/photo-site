@@ -233,14 +233,14 @@ export function BulkPhotoUpload({ albumId, startingSortOrder, onUploaded }: Bulk
           type="button"
           onClick={clearAll}
           disabled={pendingImages.length === 0 || isUploading}
-          className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+          className="rounded bg-red-500 px-4 py-2 text-cream hover:bg-red-600">
           Clear
         </Button>
         <Button
           type="button"
           onClick={uploadAll}
           disabled={pendingImages.length === 0 || isUploading}
-          className="rounded bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-600">
+          className="rounded bg-emerald-500 px-4 py-2 text-cream hover:bg-emerald-600">
           {uploadButtonLabel}
         </Button>
       </div>

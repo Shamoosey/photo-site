@@ -5,6 +5,7 @@ import { AdminRoute } from "./utils/AdminRoute";
 import AlbumGrid from "./pages/AlbumGrid";
 import { ImageGrid } from "./pages/ImageGrid";
 import EditAlbum from "./pages/Admin/EditAlbum";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<AlbumGrid />} />
+          <Route path="/about" element={<About />} />
           <Route path="/albums/:id" element={<ImageGrid />} />
           <Route
             path="admin"

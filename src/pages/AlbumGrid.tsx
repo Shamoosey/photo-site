@@ -16,11 +16,13 @@ function AlbumCard({ album }: { album: Album }) {
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-colors duration-500 group-hover:from-black/90 group-hover:via-black/50" />
 
-      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight drop-shadow">{album.name}</h2>
+      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight drop-shadow text-cream">{album.name}</h2>
         {album.description && (
           <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-500 ease-in-out group-hover:grid-rows-[1fr] group-hover:opacity-100 group-focus-visible:grid-rows-[1fr] group-focus-visible:opacity-100">
-            <p className="overflow-hidden mt-1 text-sm md:text-base text-white/80 line-clamp-3">{album.description}</p>
+            <p className="overflow-hidden mt-1 text-sm md:text-base text-cream-darker line-clamp-3">
+              {album.description}
+            </p>
           </div>
         )}
       </div>
@@ -40,7 +42,7 @@ export default function AlbumGrid() {
   }
 
   return (
-    <section className="grid grid-cols-1 gap-1.5 p-1 2xl:grid-cols-2 md:pr-4 pt-2">
+    <section className="grid grid-cols-1 gap-1.5 p-1 2xl:grid-cols-2 md:pr-4 pt-2 bg-cream">
       {albums?.map((album) => (
         <AlbumCard key={album.id} album={album} />
       ))}

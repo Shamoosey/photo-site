@@ -77,7 +77,7 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}>
       <Button
-        className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white text-2xl sm:text-3xl leading-none hover:text-gray-300 transition-colors"
+        className="absolute top-3 right-3 sm:top-4 sm:right-4 text-cream text-2xl sm:text-3xl leading-none hover:text-gray-300 transition-colors"
         onClick={onClose}>
         <FaX />
       </Button>
@@ -94,14 +94,14 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
         />
 
         {(current.caption || current.metaData) && (
-          <div className="flex-shrink-0 w-full min-w-0 text-center text-white px-2 sm:px-4">
+          <div className="flex-shrink-0 w-full min-w-0 text-center text-cream px-2 sm:px-4">
             {current.caption && (
               <p className="text-xs sm:text-sm md:text-base 2xl:text-lg font-medium wrap-break-word">
                 {current.caption}
               </p>
             )}
             {current.metaData && (
-              <p className="text-[10px] sm:text-xs md:text-sm 2xl:text-base text-white/50 mt-0.5 whitespace-pre-wrap wrap-break-word line-clamp-4">
+              <p className="text-[10px] sm:text-xs md:text-sm 2xl:text-base text-cream-darker mt-0.5 whitespace-pre-wrap wrap-break-word line-clamp-4">
                 {current.metaData}
               </p>
             )}
@@ -110,7 +110,7 @@ export default function Lightbox({ images, selectedIndex, onClose, onNext, onPre
       </div>
 
       <div
-        className="absolute bottom-3 sm:bottom-4 flex items-center gap-3 sm:gap-4 text-white"
+        className="absolute bottom-3 sm:bottom-4 flex items-center gap-3 sm:gap-4 text-cream"
         onClick={(e) => e.stopPropagation()}>
         <Button
           variant="icon"
