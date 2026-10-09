@@ -33,7 +33,7 @@ function EditAlbumForm({ album }: { album: Album }) {
   const goBack = () => navigate("/admin");
 
   const { form, coverPreview, isSaving, isUploadingCover, error, handleChange, handleCoverChange, handleSubmit } =
-    useEditAlbumForm(album, { onSaved: goBack });
+    useEditAlbumForm(album, {});
 
   const { albumImages } = useAlbumImages(album.id);
 
