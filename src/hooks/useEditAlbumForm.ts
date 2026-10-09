@@ -92,9 +92,6 @@ export function useEditAlbumForm(album: Album, { onSaved }: UseEditAlbumFormOpti
       }
     }
 
-    console.log(form.sortOrder);
-    console.log(isNaN(form.sortOrder));
-
     const payload: EditAlbum = {
       name: form.name.trim(),
       description: form.description,
