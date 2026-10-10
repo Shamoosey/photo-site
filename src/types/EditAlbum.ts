@@ -4,4 +4,5 @@ export interface EditAlbum {
   coverImageUrl?: string;
   coverImageId?: string;
   sortOrder: number;
+  isDraft: boolean;
 }

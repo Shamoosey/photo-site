@@ -79,6 +79,19 @@ function EditAlbumForm({ album }: { album: Album }) {
           />
         </label>
 
+        <div className="flex">
+          <label className="flex gap-1 text-sm">
+            <Input
+              name="isDraft"
+              checked={form.isDraft}
+              type="checkbox"
+              onChange={handleChange}
+              className={fieldClass}
+            />
+            Mark as Draft
+          </label>
+        </div>
+
         <label className="flex flex-col gap-1 text-sm">
           Cover image
           <Input type="file" accept="image/*" onChange={handleCoverChange} className={fieldClass} />

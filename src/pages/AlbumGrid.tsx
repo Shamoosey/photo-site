@@ -32,6 +32,7 @@ function AlbumCard({ album }: { album: Album }) {
 
 export default function AlbumGrid() {
   const { sortedAlbums, isLoading } = useAlbums();
+  const nonDraftAlbums = sortedAlbums?.filter((x) => !x.isDraft);
 
   if (isLoading) {
     return (
@@ -43,7 +44,7 @@ export default function AlbumGrid() {
 
   return (
     <section className="grid grid-cols-1 gap-1.5 p-1 2xl:grid-cols-2 md:pr-4 pt-2 bg-cream">
-      {sortedAlbums?.map((album) => (
+      {nonDraftAlbums?.map((album) => (
         <AlbumCard key={album.id} album={album} />
       ))}
     </section>
