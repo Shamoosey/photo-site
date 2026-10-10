@@ -3,4 +3,5 @@ export interface CreateAlbumPayload {
   description: string;
   coverImageUrl: string;
   coverImageId: string;
+  isDraft: boolean;
 }

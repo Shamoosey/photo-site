@@ -9,7 +9,7 @@ import { Textarea } from "../../components/UI/TextArea";
 
 const MAX_INPUT_BYTES = 10 * 1024 * 1024;
 
-const emptyForm = { name: "", description: "" };
+const emptyForm = { name: "", description: "", isDraft: true, sortOrder: 0 };
 
 function Admin() {
   const { sortedAlbums } = useAlbums();
@@ -100,6 +100,7 @@ function Admin() {
         description: form.description.trim(),
         coverImageUrl: uploaded.url,
         coverImageId: uploaded.publicId,
+        isDraft: form.isDraft,
       },
       { onSuccess: closeForm },
     );

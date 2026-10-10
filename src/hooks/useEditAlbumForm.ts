@@ -18,6 +18,7 @@ export function useEditAlbumForm(album: Album, { onSaved }: UseEditAlbumFormOpti
     name: album.name,
     description: album.description ?? "",
     sortOrder: album.sortOrder ?? 0,
+    isDraft: album.isDraft ?? true,
   });
 
   const [coverPreview, setCoverPreview] = useState<string | null>(album.coverImageUrl ?? null);
@@ -35,11 +36,14 @@ export function useEditAlbumForm(album: Album, { onSaved }: UseEditAlbumFormOpti
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const target = e.target;
+    const { name, type, value } = target;
+
+    const newValue = type === "checkbox" ? (target as HTMLInputElement).checked : value;
 
     setForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
@@ -96,6 +100,7 @@ export function useEditAlbumForm(album: Album, { onSaved }: UseEditAlbumFormOpti
       name: form.name.trim(),
       description: form.description,
       sortOrder: form.sortOrder,
+      isDraft: form.isDraft,
       ...cover,
     };
 
