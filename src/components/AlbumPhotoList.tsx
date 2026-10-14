@@ -43,6 +43,7 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
 
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const [compact, setCompact] = useState(false);
 
   const resetDrag = () => {
     setDraggedId(null);
@@ -67,7 +68,12 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-lg font-semibold">Photos in this album</h3>
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="text-lg font-semibold">Photos in this album</h3>
+        <Button type="button" onClick={() => setCompact((c) => !c)} aria-pressed={compact}>
+          {compact ? "Show details" : "Compact view"}
+        </Button>
+      </div>
 
       {reorderError && (
         <p role="alert" className="text-sm text-red-500">
@@ -75,10 +81,19 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={
+          compact
+            ? "grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
+            : "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+        }>
         {orderedImages.map((image: Image, index: number) =>
           isEditing(image.id) ? (
-            <div key={image.id} className="flex flex-col gap-2 rounded border border-gray-200 p-3 dark:border-gray-700">
+            <div
+              key={image.id}
+              className={`flex flex-col gap-2 rounded border border-gray-200 p-3 dark:border-gray-700 ${
+                compact ? "col-span-full sm:col-span-2 md:col-span-2 lg:col-span-3" : ""
+              }`}>
               <img src={image.imageUrl} alt="" className="h-40 w-full rounded object-cover" />
 
               <label className="flex flex-col gap-1 text-sm">
@@ -124,6 +139,7 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
             <div
               key={image.id}
               draggable={!isReordering(image.id)}
+              title={compact ? image.caption || "No caption" : undefined}
               onDragStart={(e) => {
                 setDraggedId(image.id);
                 e.dataTransfer.effectAllowed = "move";
@@ -141,23 +157,39 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
               }}
               onDragEnd={resetDrag}
               className={[
-                "flex flex-col justify-between gap-2 rounded border border-gray-200 p-3 dark:border-gray-700",
+                "flex flex-col justify-between rounded border border-gray-200 dark:border-gray-700",
+                compact ? "gap-1 p-1.5" : "gap-2 p-3",
                 draggedId === image.id ? "opacity-40" : "",
                 dragOverId === image.id && draggedId !== image.id ? "ring-2 ring-blue-500" : "",
               ].join(" ")}>
               <div className="relative">
-                <img src={image.imageUrl} alt={image.caption} className="w-full rounded object-cover" />
+                <img
+                  src={image.imageUrl}
+                  alt={image.caption}
+                  className={`w-full rounded object-cover ${compact ? "aspect-square" : ""}`}
+                />
                 <span
-                  className="absolute left-2 top-2 cursor-grab rounded bg-black/50 p-1.5 text-cream"
+                  className={`absolute cursor-grab rounded bg-black/50 text-cream ${
+                    compact ? "left-1 top-1 p-1 text-xs" : "left-2 top-2 p-1.5"
+                  }`}
                   aria-hidden="true">
                   <FaGripVertical />
                 </span>
+                {compact && (
+                  <span className="absolute right-1 top-1 min-w-5 rounded bg-black/60 px-1.5 text-center text-xs font-semibold text-cream">
+                    {index + 1}
+                  </span>
+                )}
               </div>
               <div>
-                <p className="truncate text-sm font-medium">{image.caption || "No caption"}</p>
-                <p className="truncate text-xs text-gray-500">{image.metaData || "No meta data"}</p>
+                {!compact && (
+                  <>
+                    <p className="truncate text-sm font-medium">{image.caption || "No caption"}</p>
+                    <p className="truncate text-xs text-gray-500">{image.metaData || "No meta data"}</p>
+                  </>
+                )}
 
-                <div className="mt-1 flex items-center justify-between gap-2">
+                <div className={`flex flex-wrap items-center justify-between gap-1 ${compact ? "" : "mt-1 gap-2"}`}>
                   <div className="flex gap-1">
                     <Button
                       type="button"
