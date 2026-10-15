@@ -1,5 +1,3 @@
-import { Button } from "../components/UI";
-
 export default function AboutPage() {
   const { name, photo, bio } = {
     name: "Shamus Osler",
