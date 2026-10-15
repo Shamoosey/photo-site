@@ -4,7 +4,7 @@ import type { EditAlbum } from "../types/EditAlbum";
 import { useUpdateAlbum } from "./useAlbumMutations";
 import { useUploadImage } from "./useUploadImage";
 
-const MAX_INPUT_BYTES = 10 * 1024 * 1024; // match your Cloudinary plan's per-image limit
+const MAX_INPUT_BYTES = 10 * 1024 * 1024;
 
 interface UseEditAlbumFormOptions {
   onSaved?: () => void;
