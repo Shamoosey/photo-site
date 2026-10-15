@@ -1,8 +1,10 @@
+import { Button } from "../components/UI";
+
 export default function AboutPage() {
   const { name, photo, bio } = {
     name: "Shamus Osler",
     photo: {
-      src: "https://res.cloudinary.com/shamoose/image/upload/v1791469672/photo-site-prod/about-assets/sosler.jpg",
+      src: "https://so-photo-site.tor1.cdn.digitaloceanspaces.com/sosler.jpg",
       alt: "Portrait of me :)",
     },
     bio: [
@@ -27,15 +29,18 @@ export default function AboutPage() {
 
           <section className="pt-1">
             <p className="mb-4.5 text-xs uppercase tracking-[0.16em] text-cream-font">About</p>
-
             <h1 className="mb-1.5 text-[34px] font-medium leading-[1.08] md:text-[44px]">{name}</h1>
-
             <div>
               {bio.map((paragraph, i) => (
                 <p key={i} className="mb-5 max-w-[52ch] text-base leading-[1.75] text-[#3a3630]">
                   {paragraph}
                 </p>
               ))}
+            </div>
+            <div>
+              <a href="mailto:shamuso23@gmail.com">
+                <span>Contact Me</span>
+              </a>
             </div>
           </section>
         </div>

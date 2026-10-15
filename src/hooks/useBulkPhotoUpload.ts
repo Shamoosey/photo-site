@@ -11,7 +11,6 @@ export interface PendingImage {
   caption: string;
   metaData: string;
   sortOrder: number;
-  /** Set once the file is on Cloudinary, so a retry doesn't upload it again. */
   uploaded?: UploadedImage;
 }
 
@@ -19,7 +18,6 @@ type EditablePendingField = "caption" | "metaData" | "sortOrder";
 
 export interface UseBulkPhotoUploadOptions {
   onUploaded?: () => void;
-  /** Offset applied to each new image's sortOrder so uploads append after existing photos. */
   startingSortOrder?: number;
 }
 
@@ -27,8 +25,6 @@ export interface UploadProgress {
   current: number;
   total: number;
 }
-
-/** How many files to upload to Cloudinary at once. */
 const UPLOAD_CONCURRENCY = 3;
 
 const reindex = (images: PendingImage[]): PendingImage[] => images.map((img, idx) => ({ ...img, sortOrder: idx }));
@@ -59,12 +55,6 @@ async function settleWithConcurrency<T, R>(
   return results;
 }
 
-/**
- * Owns all state and logic for selecting, previewing, editing and
- * submitting a batch of images for an album. Files upload straight to
- * Cloudinary from the browser; the API only ever receives the resulting
- * URLs, so there's no request-size limit to work around here.
- */
 export function useBulkPhotoUpload(albumId: string, options: UseBulkPhotoUploadOptions = {}) {
   const { onUploaded, startingSortOrder = 0 } = options;
   const queryClient = useQueryClient();
@@ -166,7 +156,6 @@ export function useBulkPhotoUpload(albumId: string, options: UseBulkPhotoUploadO
     setError(null);
 
     try {
-      // 1) Upload anything not already on Cloudinary, a few files at a time.
       const toUpload = pendingImages.filter((img) => !img.uploaded);
       let completed = 0;
 
@@ -240,8 +229,6 @@ export function useBulkPhotoUpload(albumId: string, options: UseBulkPhotoUploadO
         );
       }
     } catch (err) {
-      // Registering with the API failed. The files are already on Cloudinary
-      // and cached on the pending items, so retrying only re-sends the JSON.
       setError(err instanceof Error ? err.message : "Something went wrong while saving the photos.");
     } finally {
       setIsUploading(false);
