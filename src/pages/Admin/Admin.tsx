@@ -102,7 +102,11 @@ function Admin() {
         coverImageId: uploaded.publicId,
         isDraft: form.isDraft,
       },
-      { onSuccess: closeForm },
+      {
+        onSuccess: (newAlbum) => {
+          navigate(`/admin/editAlbum/${newAlbum.id}`);
+        },
+      },
     );
   };
 
