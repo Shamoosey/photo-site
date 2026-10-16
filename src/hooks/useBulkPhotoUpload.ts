@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import * as PhotoService from "../services/photo.service";
 import { uploadImage, type UploadedImage } from "../services/upload.service";
-import { prepareImageForUpload } from "../utils/prepareImage";
+import { prepareImageForUpload } from "../utils/PrepareImage";
+import { settleWithConcurrency } from "../utils/SettleWithConcurrency";
 
 export interface PendingImage {
   id: string;
@@ -28,32 +29,6 @@ export interface UploadProgress {
 const UPLOAD_CONCURRENCY = 3;
 
 const reindex = (images: PendingImage[]): PendingImage[] => images.map((img, idx) => ({ ...img, sortOrder: idx }));
-
-/** Runs fn over items with at most `limit` in flight. Never rejects; returns per-item results. */
-async function settleWithConcurrency<T, R>(
-  items: T[],
-  limit: number,
-  fn: (item: T) => Promise<R>,
-): Promise<PromiseSettledResult<R>[]> {
-  const results: PromiseSettledResult<R>[] = new Array(items.length);
-  let next = 0;
-
-  async function worker() {
-    while (next < items.length) {
-      const i = next++;
-
-      try {
-        results[i] = { status: "fulfilled", value: await fn(items[i]) };
-      } catch (reason) {
-        results[i] = { status: "rejected", reason };
-      }
-    }
-  }
-
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
-
-  return results;
-}
 
 export function useBulkPhotoUpload(albumId: string, options: UseBulkPhotoUploadOptions = {}) {
   const { onUploaded, startingSortOrder = 0 } = options;

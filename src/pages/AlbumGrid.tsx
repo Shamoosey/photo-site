@@ -1,18 +1,30 @@
+import { useState } from "react";
 import { LoadingSpinner } from "../components/UI";
 import { useAlbums } from "../hooks/useAlbums";
 import type { Album } from "../types/Album";
 import { Link } from "react-router";
 
 function AlbumCard({ album }: { album: Album }) {
+  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(true);
+
   return (
     <Link
       to={`/albums/${album.id}`}
       className="group relative block w-full h-60 sm:h-100 aspect-square overflow-hidden bg-black">
+      {isLoadingImage && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      )}
       <img
         src={album.coverImageUrl}
         alt=""
+        onLoad={() => setIsLoadingImage(false)}
+        onError={() => setIsLoadingImage(false)}
         loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+        className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105 ${
+          isLoadingImage ? "opacity-0" : "opacity-100"
+        }`}
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-colors duration-500 group-hover:from-black/90 group-hover:via-black/50" />

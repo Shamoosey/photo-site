@@ -84,7 +84,7 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
       <div
         className={
           compact
-            ? "grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
+            ? "grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8"
             : "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
         }>
         {orderedImages.map((image: Image, index: number) =>
@@ -170,13 +170,13 @@ export function AlbumPhotoList({ albumId }: AlbumPhotoListProps) {
                 />
                 <span
                   className={`absolute cursor-grab rounded bg-black/50 text-cream ${
-                    compact ? "left-1 top-1 p-1 text-xs" : "left-2 top-2 p-1.5"
+                    compact ? "left-1 top-1 p-1 text-xl" : "left-2 top-2 p-1.5"
                   }`}
                   aria-hidden="true">
                   <FaGripVertical />
                 </span>
                 {compact && (
-                  <span className="absolute right-1 top-1 min-w-5 rounded bg-black/60 px-1.5 text-center text-xs font-semibold text-cream">
+                  <span className="absolute right-1 top-1 min-w-5 rounded bg-black/60 px-1.5 text-center text-lg font-semibold text-cream">
                     {index + 1}
                   </span>
                 )}
